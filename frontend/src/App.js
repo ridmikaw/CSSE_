@@ -10,6 +10,7 @@ import AddBin from './pages/AddBin';
 import { AuthProvider } from './middleware/AuthContext';
 import AddWasteType from './pages/AddWasteType';
 import PaymentList from './pages/PaymentList';
+import WasteTypesTable from './pages/WasteTypeTable';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/collections" element={<BinCollection />} />
           <Route path="/bin" element={<BinPage />} />
           <Route path="/addwaste" element={<AddWasteType />} />
+          <Route path="/wastetype" element={<WasteTypesTable />} />
           <Route path="/payments" element={<PaymentList/>}/>
           
         </Routes>
