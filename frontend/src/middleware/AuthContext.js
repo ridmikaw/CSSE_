@@ -13,12 +13,13 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       try {
         const response = await axios.get(API_ENDPOINTS.CHECK_AUTH, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token}` }, // Include token in headers
         });
-        setUser(response.data.user);
+        console.log(token);
+        setUser(response.data.user); // Set the user if token is valid
       } catch (error) {
         console.error('Error loading user:', error);
-        localStorage.removeItem('token');
+        localStorage.removeItem('token'); // Remove token if invalid
         setUser(null);
       }
     }

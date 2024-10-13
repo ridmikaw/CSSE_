@@ -6,6 +6,7 @@ const API_ENDPOINTS = {
   SIGN_IN: `${BASE_URL}/login`,
   SIGN_UP: `${BASE_URL}/signup`,
   GET_USER_PROFILE: `${BASE_URL}/users/profile`,
+  CHECK_AUTH: `${BASE_URL}/auth/check`, // Use the new /auth/check endpoint
 };
 
 export default API_ENDPOINTS;
