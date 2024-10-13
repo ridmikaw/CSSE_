@@ -12,12 +12,19 @@ const BinCollection = () => {
 
   return (
     <div className="bin-collection-page flex flex-col min-h-screen">
-      <header className="page-header">
-        <h2>Bin Collection</h2>
-        <button className="search-button">🔍</button>
+      {/* Header Section */}
+      <header className="fixed top-0 left-0 right-0 z-10 page-header flex justify-between items-center p-4 bg-white shadow-md">
+        <h2 className="text-xl font-bold">Payments</h2>
+        <button className="search-button text-2xl">🔍</button>
       </header>
-      {/* Use TabSection component here */}
-      <TabSection activeTab={activeTab} onTabChange={handleTabChange} />
+
+      {/* Tab Section */}
+      <div className="fixed top-14 left-0 right-0 z-10">
+        <TabSection activeTab={activeTab} onTabChange={handleTabChange} />
+      </div>
+
+      {/* Spacer for header and tab section */}
+      <div className="pt-28 pb-4"></div>
       <div className="small-spacer"></div>
       <QRLinkCard />
       <TabBar />

@@ -8,6 +8,8 @@ import SignUp from './pages/SignUp';
 import './styles/styles.css';
 import AddBin from './pages/AddBin';
 import { AuthProvider } from './middleware/AuthContext';
+import AddWasteType from './pages/AddWasteType';
+import PaymentList from './pages/PaymentList';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route path="/add-bin" element={<AddBin />} />
           <Route path="/collections" element={<BinCollection />} />
           <Route path="/bin" element={<BinPage />} />
+          <Route path="/addwaste" element={<AddWasteType />} />
+          <Route path="/payments" element={<PaymentList/>}/>
           
         </Routes>
       </Router>
