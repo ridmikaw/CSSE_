@@ -6,7 +6,9 @@ const router = express.Router();
 
 // Route to check if the token is valid and return user data
 router.get('/auth/check', authMiddleware, (req, res) => {
-  return res.json({ message: 'This route works!' });
+  
+  console.log('User authenticated:', req.user); // Log authenticated user details
+  return res.json({ message: 'This route works!', user: req.user });
 });
 
 // Export router as a named export

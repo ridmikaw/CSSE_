@@ -15,18 +15,23 @@ const SignUp = () => {
     e.preventDefault();
     setError('');
     setLoading(true); // Set loading state to true
-
+  
     try {
       // Use the sign-up endpoint from the config
-      await axios.post(API_ENDPOINTS.SIGN_UP, { name, email, password });
+      const response = await axios.post(API_ENDPOINTS.SIGN_UP, { name, email, password });
+      
+      // Log user details in the browser console
+      console.log('User signed up:', response.data); // Log the response data
+  
       navigate('/signin'); // Redirect to sign-in page after successful registration
     } catch (err) {
       setError('Error signing up, please try again'); // Display error message
+      console.error('Sign up error:', err); // Log error to the console
     } finally {
       setLoading(false); // Reset loading state
     }
   };
-
+  
   return (
     <div className="signup-container max-w-md mx-auto my-8 p-6 border border-gray-300 rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold mb-4 text-center">Sign Up</h2>
