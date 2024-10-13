@@ -1,33 +1,26 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import connectDB from './config/db.js';
+import binRoutes from './routes/binRoutes.js';
 
-// Initialize dotenv to load environment variables from .env file
 dotenv.config();
-
 const app = express();
-const port = process.env.PORT || 4000; // Use environment variable for port if available
+app.use(express.json()); // Middleware to parse JSON
 
-const mongoURI = process.env.MONGO_URI; // Fetch MongoDB URI from environment variable
+const port = process.env.PORT || 4000;
 
 // Connect to MongoDB
-mongoose
-  .connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log('✅ Successfully connected to MongoDB'))
-  .catch((err) => {
-    console.error('❌ MongoDB connection error:', err.message);
-    process.exit(1); // Exit process with failure
-  });
+connectDB();
 
-// Root route
+// Use bin routes
+app.use('/api', binRoutes);
+
+// Default route
 app.get('/', (req, res) => {
-  res.status(200).send('Hello, welcome to our API!');
+  res.send('Waste Management System API');
 });
 
-// Start the server
+// Start server
 app.listen(port, () => {
-  console.log(`🚀 Server is running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });

@@ -7,7 +7,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<BinCollection />} />
+        <Route path="/collections" element={<BinCollection />} />
       </Routes>
     </Router>
   );
