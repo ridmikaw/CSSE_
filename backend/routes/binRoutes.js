@@ -1,15 +1,16 @@
 import express from 'express';
-import { addBin, verifyBin, getBin } from '../controllers/binController.js';
+import {
+  addBin,
+  verifyBin,
+  getUserBins,
+} from '../controllers/binController.js';
+import protect from '../middleware/AuthMiddleWare.js';
 
 const router = express.Router();
 
-// POST: Add a new bin (Owner)
-router.post('/bins', addBin);
-
-// POST: Verify bin and generate QR code (Collector)
-router.post('/bins/:binId/verify', verifyBin);
-
-// GET: Get bin details by ID
-router.get('/bins/:binId', getBin);
+// Protect the routes with the authentication middleware
+router.post('/bins', protect, addBin);
+router.get('/bins/:userId', protect, getUserBins);
+router.put('/bins/verify/:binId', protect, verifyBin);
 
 export default router;

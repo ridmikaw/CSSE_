@@ -1,10 +1,12 @@
+// controllers/binController.js
 import Bin from '../models/Bin.js';
 import generateQRCode from '../utils/qrCodeGenerator.js';
 
 // Add a new bin
 export const addBin = async (req, res) => {
   try {
-    const { ownerId, binType, location } = req.body;
+    const { binType, location } = req.body;
+    const ownerId = req.user.id; // Get ownerId from the authenticated user
 
     const newBin = new Bin({ ownerId, binType, location });
     await newBin.save();
@@ -31,7 +33,6 @@ export const verifyBin = async (req, res) => {
       return res.status(400).json({ message: 'Bin is already verified' });
     }
 
-    // Generate a unique QR code for the bin
     const qrData = `${process.env.BASE_URL}/bins/${bin._id}`;
     const qrCode = await generateQRCode(qrData);
 
@@ -49,20 +50,20 @@ export const verifyBin = async (req, res) => {
   }
 };
 
-// Get bin details
-export const getBin = async (req, res) => {
+// Get bins for a specific user
+export const getUserBins = async (req, res) => {
   try {
-    const { binId } = req.params;
-    const bin = await Bin.findById(binId);
+    const userId = req.user.id; // Get userId from the authenticated user
+    const bins = await Bin.find({ ownerId: userId });
 
-    if (!bin) {
-      return res.status(404).json({ message: 'Bin not found' });
+    if (!bins.length) {
+      return res.status(404).json({ message: 'No bins found for this user' });
     }
 
-    res.status(200).json(bin);
+    res.status(200).json(bins);
   } catch (err) {
     res
       .status(500)
-      .json({ message: 'Error fetching bin details', error: err.message });
+      .json({ message: 'Error fetching user bins', error: err.message });
   }
 };

@@ -8,12 +8,18 @@ const binSchema = new mongoose.Schema(
       required: true,
     },
     binType: { type: String, required: true },
-    location: { type: String, required: true },
+    location: {
+      type: {
+        lat: { type: Number, required: true }, // Latitude
+        lng: { type: Number, required: true }, // Longitude
+      },
+      required: true,
+    },
     qrCode: { type: String }, // QR code generated after verification
     isVerified: { type: Boolean, default: false },
   },
   { timestamps: true }
-); // Adds createdAt and updatedAt timestamps
+);
 
 const Bin = mongoose.model('Bin', binSchema);
 
