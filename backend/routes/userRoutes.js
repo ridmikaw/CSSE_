@@ -8,6 +8,8 @@ const router = express.Router();
 
 // @desc    User registration
 // @route   POST /api/users/signup
+// @desc    User registration
+// @route   POST /api/users/signup
 router.post('/signup', async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -31,6 +33,9 @@ router.post('/signup', async (req, res) => {
 
     await user.save();
 
+    // Log user details
+    console.log('New User Created:', { id: user._id, name: user.name, email: user.email });
+
     // Create JWT token
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: '1h',
@@ -38,9 +43,11 @@ router.post('/signup', async (req, res) => {
 
     res.status(201).json({ token, userId: user._id });
   } catch (error) {
+    console.error('Sign up error:', error); // Log error if occurs
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 // @desc    User login
 // @route   POST /api/users/login
@@ -50,7 +57,10 @@ router.post('/login', async (req, res) => {
   try {
     // Check if user exists
     const user = await User.findOne({ email });
+    console.log("yuu", user);
     if (!user) {
+      
+      
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
@@ -64,6 +74,8 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
+    console.log("TTT", token);
+    
 
     res.json({ token, userId: user._id });
   } catch (error) {

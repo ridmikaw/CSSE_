@@ -9,22 +9,32 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const loadUser = useCallback(async () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
+    
+    
     if (token) {
+      console.log("LOADUSER TOKEM",token);
       try {
         const response = await axios.get(API_ENDPOINTS.CHECK_AUTH, {
-          headers: { Authorization: `Bearer ${token}` }, // Include token in headers
+          headers: { "Authorization": `Bearer ${token}` }, // Include token in headers
         });
-        console.log(token);
+        console.log('Token:', token);
+        console.log('User data loaded:', response.data.user); // Log loaded user data
         setUser(response.data.user); // Set the user if token is valid
       } catch (error) {
-        console.error('Error loading user:', error);
-        localStorage.removeItem('token'); // Remove token if invalid
+        console.error('Error loading user:', error); // Log full error
+        if (error.response) {
+          console.error('Response data:', error.response.data); // Log error response data
+        }
+        
         setUser(null);
       }
+    } else {
+      console.log('No token found'); // Log when no token is found
     }
     setLoading(false);
   }, []);
+  
 
   useEffect(() => {
     loadUser();
@@ -37,7 +47,9 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
       });
-      localStorage.setItem('token', response.data.token);
+      console.log("TOKEN",response.data.token);
+      
+      localStorage.setItem("token", response.data.token);
       setUser(response.data.user);
       return response.data.user;
     } catch (error) {
