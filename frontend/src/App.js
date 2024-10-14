@@ -8,6 +8,7 @@ import SignUp from './pages/SignUp';
 import './styles/styles.css';
 import AddBin from './pages/AddBin';
 import { AuthProvider } from './middleware/AuthContext';
+import SubmitReview from './pages/SubmitReview';
 
 function App() {
   return (
@@ -17,11 +18,10 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
 
-          
           <Route path="/add-bin" element={<AddBin />} />
           <Route path="/collections" element={<BinCollection />} />
           <Route path="/bin" element={<BinPage />} />
-          
+          <Route path="/submit-review" element={<SubmitReview />} />
         </Routes>
       </Router>
     </AuthProvider>
