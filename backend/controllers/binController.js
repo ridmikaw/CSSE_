@@ -75,6 +75,26 @@ export const getUserBins = async (req, res) => {
       .json({ message: 'Error fetching user bins', error: err.message });
   }
 };
+
+
+//binMAPuseriD
+export const GetBinByUserId = async (req, res) => {
+  try {
+    const userId = req.params.userId; // Read userId from the URL path
+    const bins = await Bin.find({ ownerId: userId });
+    console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDD",bins);
+    
+
+    if (!bins.length) {
+      return res.status(404).json({ message: 'No bins found for this user' });
+    }
+
+    res.status(200).json(bins);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching user bins', error: err.message });
+  }
+};
+
 // Get all bins
 export const getAllBins = async (req, res) => {
   try {
@@ -91,3 +111,4 @@ export const getAllBins = async (req, res) => {
       .json({ message: 'Error fetching bins', error: err.message });
   }
 };
+
