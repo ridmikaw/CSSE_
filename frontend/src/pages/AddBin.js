@@ -2,67 +2,50 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
+import { useAuth } from '../middleware/AuthContext';
 import API_ENDPOINTS from '../config';
 
 const AddBin = () => {
   const [name, setName] = useState('');
   const [binType, setBinType] = useState('');
   const [location, setLocation] = useState({ lat: 6.9271, lng: 79.8612 });
-  const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
+    if (!loading && !user) {
       setError('No authentication token found. Please sign in.');
       navigate('/signin');
-      return;
     }
-
-    const fetchUserInfo = async () => {
-      try {
-        const response = await axios.get(API_ENDPOINTS.GET_USER_INFO, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUserId(response.data.userId);
-      } catch (error) {
-        console.error('Error fetching user info:', error);
-        setError(
-          'Failed to fetch user information. Please try signing in again.'
-        );
-        navigate('/signin');
-      }
-    };
-
-    fetchUserInfo();
-  }, [navigate]);
+  }, [navigate, user, loading]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null);
 
-    if (!userId) {
+    if (!user) {
       setError('User ID is missing. Please try signing in again.');
       return;
     }
 
     const newBin = {
-      ownerId: userId,
+      ownerId: user._id,
       binType,
       location,
       name,
     };
+    console.log(newBin);
 
     try {
       await axios.post(API_ENDPOINTS.ADD_BIN, newBin, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
-      navigate('/');
+      navigate('/submit-review');
     } catch (error) {
       console.error('Error adding bin:', error);
       setError('Failed to add bin. Please try again later.');
@@ -77,11 +60,25 @@ const AddBin = () => {
   };
 
   if (loadError) return <div>Error loading maps</div>;
-  if (!isLoaded) return <div>Loading maps...</div>;
+  if (!isLoaded || loading) return <div>Loading...</div>;
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Add New Bin</h2>
+      {/* Toolbar */}
+      <div className="flex items-center justify-between p-4 bg-white shadow-md">
+        <button
+          onClick={() => navigate(-1)} // Navigate back to the previous page
+          className="flex items-center text-gray-700"
+        >
+          <span className="material-icons">arrow_back</span>
+          Back
+        </button>
+        <h2 className="text-2xl font-bold">Add New Bin</h2>
+        <div className="flex items-center">
+          {/* Add any additional items here */}
+        </div>
+      </div>
+
       {error && (
         <div
           className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"

@@ -14,8 +14,11 @@ const port = process.env.PORT || 4000;
 
 app.use(cors());
 // Connect to MongoDB
+const mongoURI = process.env.MONGO_URI;
+const jwtSecret = process.env.JWT_SECRET;
 connectDB();
-
+console.log('Mongo URI:', mongoURI); // Optional: for debugging
+console.log('JWT Secret:', jwtSecret);
 // Use routes
 app.use('/api', authRoutes);
 app.use('/api', binRoutes); // Bin routes
