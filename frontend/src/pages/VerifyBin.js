@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import TabBar from '../components/TabBar';
-import TabSection from '../components/TabSection';
-import API_ENDPOINTS from '../config';
-import { useAuth } from '../middleware/AuthContext';
-import BinDetailsModal from '../components/BinDetailsModal';
+import TabBar from '../components/TabBar.js';
+import TabSection from '../components/TabSection.js';
+import API_ENDPOINTS from '../config.js';
+import { useAuth } from '../middleware/AuthContext.js';
+import BinDetailsModal from '../components/BinDetailsModal.js';
 
 const VerifyBinPage = () => {
   const [activeTab, setActiveTab] = useState('requests');
@@ -15,6 +15,7 @@ const VerifyBinPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedBin, setSelectedBin] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showVerified, setShowVerified] = useState(false); // New state for toggle
   const navigate = useNavigate();
   const { user, loading } = useAuth();
 
@@ -51,6 +52,13 @@ const VerifyBinPage = () => {
     );
     setFilteredBins(filtered);
   }, [searchTerm, bins]);
+
+  useEffect(() => {
+    const filtered = bins.filter((bin) =>
+      showVerified ? bin.isVerified : !bin.isVerified
+    );
+    setFilteredBins(filtered);
+  }, [showVerified, bins]);
 
   const handleSort = () => {
     const sortedBins = [...filteredBins].sort((a, b) =>
@@ -119,6 +127,19 @@ const VerifyBinPage = () => {
           <button className="search-button text-2xl text-blue-500 hover:text-blue-700 transition">
             🔍
           </button>
+        </div>
+
+        <div className="flex items-center">
+          <label htmlFor="toggle-switch" className="mr-2">
+            Show Verified
+          </label>
+          <input
+            id="toggle-switch"
+            type="checkbox"
+            checked={showVerified}
+            onChange={() => setShowVerified(!showVerified)}
+            className="toggle-checkbox"
+          />
         </div>
       </header>
 
