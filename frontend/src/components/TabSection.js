@@ -52,3 +52,32 @@ const TabSection = ({ activeTab, onTabChange }) => {
 };
 
 export default TabSection;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
