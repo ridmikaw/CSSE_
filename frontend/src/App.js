@@ -44,7 +44,6 @@ function App() {
 
           <Route path="/submit-review" element={<SubmitReview />} />
 
-
         </Routes>
       </Router>
     </AuthProvider>
