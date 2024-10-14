@@ -12,6 +12,7 @@ const BinCollection = () => {
 
   return (
     <div className="bin-collection-page flex flex-col min-h-screen">
+
       <header className="page-header flex justify-between items-center p-4 bg-white shadow-md rounded-b-lg">
         <div className="flex items-center">
           <input
@@ -23,9 +24,16 @@ const BinCollection = () => {
             🔍
           </button>
         </div>
+
       </header>
-      {/* Use TabSection component here */}
-      <TabSection activeTab={activeTab} onTabChange={handleTabChange} />
+
+      {/* Tab Section */}
+      <div className="fixed top-14 left-0 right-0 z-10">
+        <TabSection activeTab={activeTab} onTabChange={handleTabChange} />
+      </div>
+
+      {/* Spacer for header and tab section */}
+      <div className="pt-28 pb-4"></div>
       <div className="small-spacer"></div>
       <QRLinkCard />
       <TabBar />

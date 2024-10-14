@@ -71,6 +71,7 @@ const BinPage = () => {
   };
 
   return (
+
     <div className="bin-collection-page flex flex-col min-h-screen bg-gray-50">
       <header className="page-header flex justify-between items-center p-4 bg-white shadow-md rounded-b-lg">
         <div className="flex items-center">
@@ -103,6 +104,7 @@ const BinPage = () => {
           Sort
         </button>
       </div>
+
 
       {loading ? (
         <div className="flex justify-center items-center h-full mt-4">
