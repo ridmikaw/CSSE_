@@ -8,60 +8,51 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Function to load the user based on the token from local storage
   const loadUser = useCallback(async () => {
-    const token = localStorage.getItem("token");
-    
+    const token = localStorage.getItem('token');
     
     if (token) {
-      console.log("LOADUSER TOKEM",token);
       try {
         const response = await axios.get(API_ENDPOINTS.CHECK_AUTH, {
-          headers: { "Authorization": `Bearer ${token}` }, // Include token in headers
+          headers: { Authorization: `Bearer ${token}` },
         });
-        console.log('Token:', token);
-        console.log('User data loaded:', response.data.user); // Log loaded user data
-        setUser(response.data.user); // Set the user if token is valid
+        setUser(response.data.user); // Set the user data if the token is valid
       } catch (error) {
-        console.error('Error loading user:', error); // Log full error
+        console.error('Error loading user:', error); 
+        setUser(null); // Clear user state if token validation fails
         if (error.response) {
-          console.error('Response data:', error.response.data); // Log error response data
+          console.error('Error response:', error.response.data); // Detailed error logging
         }
-        
-        setUser(null);
       }
     } else {
-      console.log('No token found'); // Log when no token is found
+      console.log('No token found');
     }
     setLoading(false);
   }, []);
-  
 
+  // Automatically load user information when the app starts
   useEffect(() => {
     loadUser();
   }, [loadUser]);
 
+  // Sign-in function to authenticate user and store the token
   const signIn = async (email, password) => {
     setLoading(true);
     try {
-      const response = await axios.post(API_ENDPOINTS.SIGN_IN, {
-        email,
-        password,
-      });
-      console.log("TOKEN",response.data.token);
-      
-      localStorage.setItem("token", response.data.token);
-      setUser(response.data.user);
+      const response = await axios.post(API_ENDPOINTS.SIGN_IN, { email, password });
+      localStorage.setItem('token', response.data.token);
+      setUser(response.data.user); // Set user state after successful sign-in
       return response.data.user;
     } catch (error) {
-      console.error('Sign in error:', error.response);
-      throw new Error(
-        error.response?.data.message || 'Invalid email or password'
-      );
+      console.error('Sign in error:', error);
+      throw new Error(error.response?.data.message || 'Invalid email or password');
     } finally {
       setLoading(false);
     }
   };
 
+  // Sign-out function to clear user state and remove the token
   const signOut = () => {
     localStorage.removeItem('token');
     setUser(null);
@@ -74,6 +65,7 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// Custom hook to use the authentication context
 export const useAuth = () => {
   const context = React.useContext(AuthContext);
   if (!context) {
@@ -81,3 +73,5 @@ export const useAuth = () => {
   }
   return context;
 };
+
+export default AuthContext;

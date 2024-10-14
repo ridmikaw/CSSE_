@@ -5,17 +5,25 @@ import generateQRCode from '../utils/qrCodeGenerator.js';
 // Add a new bin
 export const addBin = async (req, res) => {
   try {
-    const { binType, location } = req.body;
-    const ownerId = req.user.id; // Get ownerId from the authenticated user
+    const { ownerId, binType, location } = req.body;
 
+    // Validate input
+    if (!ownerId || !binType || !location || !location.lat || !location.lng) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    // Create new bin
     const newBin = new Bin({ ownerId, binType, location });
+
+    // Save to the database
     await newBin.save();
 
+    res.status(201).json({ message: 'Bin added successfully', bin: newBin });
+  } catch (error) {
+    console.error(error); // Log the error for debugging
     res
-      .status(201)
-      .json({ message: 'Bin added. Awaiting verification.', bin: newBin });
-  } catch (err) {
-    res.status(500).json({ message: 'Error adding bin', error: err.message });
+      .status(500)
+      .json({ message: 'Internal server error', error: error.message });
   }
 };
 
@@ -53,7 +61,7 @@ export const verifyBin = async (req, res) => {
 // Get bins for a specific user
 export const getUserBins = async (req, res) => {
   try {
-    const userId = req.user.id; // Get userId from the authenticated user
+    const userId = req.user._id; // Get userId from the authenticated user
     const bins = await Bin.find({ ownerId: userId });
 
     if (!bins.length) {
@@ -67,6 +75,7 @@ export const getUserBins = async (req, res) => {
       .json({ message: 'Error fetching user bins', error: err.message });
   }
 };
+
 
 //binMAPuseriD
 export const GetBinByUserId = async (req, res) => {
@@ -85,3 +94,21 @@ export const GetBinByUserId = async (req, res) => {
     res.status(500).json({ message: 'Error fetching user bins', error: err.message });
   }
 };
+
+// Get all bins
+export const getAllBins = async (req, res) => {
+  try {
+    const bins = await Bin.find(); // Retrieve all bins from the database
+
+    if (!bins.length) {
+      return res.status(404).json({ message: 'No bins found' });
+    }
+
+    res.status(200).json(bins); // Return the bins
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: 'Error fetching bins', error: err.message });
+  }
+};
+
