@@ -4,118 +4,135 @@ import { useNavigate } from 'react-router-dom';
 import TabBar from '../components/TabBar';
 import TabSection from '../components/TabSection';
 import API_ENDPOINTS from '../config';
+import { useAuth } from '../middleware/AuthContext'; // Ensure this path is correct
 
 const BinPage = () => {
   const [activeTab, setActiveTab] = useState('Bins');
   const [bins, setBins] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [userName, setUserName] = useState('');
-  const [userId, setUserId] = useState('');
-
+  const [filteredBins, setFilteredBins] = useState([]);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const { user, loading } = useAuth(); // Get user and loading state from the context
 
-  // Handle tab change
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
-
-  // Fetch user details from local storage
-  useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      try {
-        const user = JSON.parse(userData);
-        if (user && user.id && user.name) {
-          setUserName(user.name);
-          setUserId(user.id);
-        } else {
-          console.warn('User data is invalid or missing required fields.');
-        }
-      } catch (error) {
-        console.error('Error parsing user data:', error);
-      }
-    } else {
-      console.warn('No user data found in local storage.');
-    }
-  }, []);
-
-  // Fetch bins data
   useEffect(() => {
     const fetchBins = async () => {
-      if (!userId) return; // Only proceed if we have a userId
+      console.log('User object:', user); // Debugging statement to check user object
+
+      // Check for user authentication
+      if (!user) {
+        setError('User not authenticated. Please log in.');
+        navigate('/signin');
+        return;
+      }
 
       try {
-        const response = await axios.get(
-          `${API_ENDPOINTS.GET_BINS}?userId=${userId}`
-        );
+        const token = localStorage.getItem('token');
+        if (!token) {
+          setError('No token found. Please log in.');
+          navigate('/signin');
+          return;
+        }
+
+        // Fetch all bins from the API
+        const response = await axios.get(API_ENDPOINTS.GET_BINS, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
         setBins(response.data);
+        setFilteredBins(response.data); // Initialize filtered bins
       } catch (error) {
         console.error('Error fetching bins:', error);
-      } finally {
-        setLoading(false);
+        setError('Failed to fetch bins. Please try again later.');
       }
     };
 
     fetchBins();
-  }, [userId]);
+  }, [user, navigate]);
 
-  // Function to navigate to AddBin page
-  const handleGoToAddBin = () => {
-    navigate('/add-bin');
+  useEffect(() => {
+    // Filter bins based on search term
+    const filtered = bins.filter((bin) =>
+      bin.binType.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredBins(filtered);
+  }, [searchTerm, bins]);
+
+  const handleSort = () => {
+    const sortedBins = [...filteredBins].sort((a, b) =>
+      a.binType.localeCompare(b.binType)
+    );
+    setFilteredBins(sortedBins);
+  };
+
+  const handleAddBin = () => {
+    // Logic to navigate to the add bin page or open a modal
+    navigate('/add-bin'); // Example route, adjust according to your app
   };
 
   return (
-    <div className="bin-collection-page flex flex-col min-h-screen">
-      {/* Header Section */}
-      <header className="fixed top-0 left-0 right-0 z-10 page-header flex justify-between items-center p-4 bg-white shadow-md">
-        <h2 className="text-xl font-bold">Payments</h2>
-        <button className="search-button text-2xl">🔍</button>
+
+    <div className="bin-collection-page flex flex-col min-h-screen bg-gray-50">
+      <header className="page-header flex justify-between items-center p-4 bg-white shadow-md rounded-b-lg">
+        <div className="flex items-center">
+          <input
+            type="text"
+            placeholder="Search Bins..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="border border-gray-300 rounded px-4 py-2 mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button className="search-button text-2xl text-blue-500 hover:text-blue-700 transition">
+            🔍
+          </button>
+        </div>
       </header>
 
-      {/* Tab Section */}
-      <div className="fixed top-14 left-0 right-0 z-10">
-        <TabSection activeTab={activeTab} onTabChange={handleTabChange} />
+      <TabSection activeTab={activeTab} onTabChange={setActiveTab} />
+
+      <div className="flex justify-between p-4 bg-white shadow-md rounded-lg mt-4">
+        <button
+          className="add-bin-button bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
+          onClick={handleAddBin}
+        >
+          Add Bin
+        </button>
+        <button
+          className="sort-button bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+          onClick={handleSort}
+        >
+          Sort
+        </button>
       </div>
 
-      {/* Spacer for header and tab section */}
-      <div className="pt-28"></div>
-      <div className="small-spacer"></div>
 
       {loading ? (
-        <div className="flex justify-center items-center h-full">
-          <p>Loading bins...</p>
+        <div className="flex justify-center items-center h-full mt-4">
+          <span className="text-lg text-gray-500">Loading bins...</span>
+        </div>
+      ) : error ? (
+        <div className="flex justify-center items-center h-full mt-4 text-red-500">
+          {error}
         </div>
       ) : (
-        <div className="bins-list px-4 py-2">
-          {bins.map((bin) => (
+        <div className="bins-list px-4 py-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredBins.map((bin) => (
             <div
-              key={bin.id}
-              className="bin-item p-4 bg-gray-100 my-2 rounded-lg shadow-sm"
+              key={bin._id}
+              className="bin-item p-4 bg-white my-2 rounded-lg shadow-md hover:shadow-lg transition duration-200"
             >
-              <p>
-                <strong>Bin Name:</strong> {bin.name}
+              <p className="text-lg font-semibold">
+                <strong>Bin Name:</strong> {bin.binType}
               </p>
-              <p>
-                <strong>Location:</strong> {bin.location}
+              <p className="text-gray-600">
+                <strong>Location:</strong> {bin.location.lat},{' '}
+                {bin.location.lng}
               </p>
             </div>
           ))}
         </div>
       )}
-
-      <div className="small-spacer"></div>
-
-      <div className="button-container flex justify-center mb-4">
-        <button
-          onClick={handleGoToAddBin}
-          className="add-bin-button w-3/4 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg transition-all duration-300"
-        >
-          Add New Bin
-        </button>
-      </div>
-
       <TabBar />
-      <div className="small-spacer"></div>
     </div>
   );
 };

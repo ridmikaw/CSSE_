@@ -12,10 +12,19 @@ const BinCollection = () => {
 
   return (
     <div className="bin-collection-page flex flex-col min-h-screen">
-      {/* Header Section */}
-      <header className="fixed top-0 left-0 right-0 z-10 page-header flex justify-between items-center p-4 bg-white shadow-md">
-        <h2 className="text-xl font-bold">Payments</h2>
-        <button className="search-button text-2xl">🔍</button>
+
+      <header className="page-header flex justify-between items-center p-4 bg-white shadow-md rounded-b-lg">
+        <div className="flex items-center">
+          <input
+            type="text"
+            placeholder="Search Bins..."
+            className="border border-gray-300 rounded px-4 py-2 mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button className="search-button text-2xl text-blue-500 hover:text-blue-700 transition">
+            🔍
+          </button>
+        </div>
+
       </header>
 
       {/* Tab Section */}

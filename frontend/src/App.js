@@ -8,9 +8,13 @@ import SignUp from './pages/SignUp';
 import './styles/styles.css';
 import AddBin from './pages/AddBin';
 import { AuthProvider } from './middleware/AuthContext';
+
 import AddWasteType from './pages/AddWasteType';
 import PaymentList from './pages/PaymentList';
 import WasteTypesTable from './pages/WasteTypeTable';
+
+import SubmitReview from './pages/SubmitReview';
+
 
 function App() {
   return (
@@ -20,14 +24,17 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
 
-          
           <Route path="/add-bin" element={<AddBin />} />
           <Route path="/collections" element={<BinCollection />} />
           <Route path="/bin" element={<BinPage />} />
+
           <Route path="/addwaste" element={<AddWasteType />} />
           <Route path="/wastetype" element={<WasteTypesTable />} />
           <Route path="/payments" element={<PaymentList/>}/>
           
+
+          <Route path="/submit-review" element={<SubmitReview />} />
+
         </Routes>
       </Router>
     </AuthProvider>
