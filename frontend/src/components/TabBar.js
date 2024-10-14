@@ -7,7 +7,7 @@ const TabBar = () => {
   const [activeTab, setActiveTab] = useState('Collection'); // Default active tab
 
   const tabs = [
-    { name: 'Collection', icon: <FaTrash />, path: '/collection' },
+    { name: 'Collection', icon: <FaTrash />, path: '/collections' },
     { name: 'Requests', icon: <FaEnvelope />, path: '/requests' },
     { name: 'Profile', icon: <FaUser />, path: '/profile' },
     { name: 'Payments', icon: <FaCreditCard />, path: '/payments' },

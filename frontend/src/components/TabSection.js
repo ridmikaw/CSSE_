@@ -3,15 +3,12 @@ import { useNavigate } from 'react-router-dom';
 
 const TabSection = ({ activeTab, onTabChange }) => {
   const navigate = useNavigate();
-  const tabs = ['Home', 'Bin', 'Collections', 'Payments'];
+  const tabs = ['Bin', 'Collections', 'Payments'];
 
   const handleTabChange = (tab) => {
     onTabChange(tab);
     // Change the URL based on the selected tab\
-    if(tab === 'Home'){
-      navigate('/home'); 
-    }
-    else if (tab === 'Bin') {
+    if (tab === 'Bin') {
       navigate('/bin'); // Update the URL for the 'Navigate' tab
     } else if (tab === 'Collections') {
       navigate('/collections'); // Update the URL for the 'Collect' tab
