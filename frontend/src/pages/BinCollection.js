@@ -24,6 +24,11 @@ const BinCollection = () => {
             🔍
           </button>
         </div>
+        <a href='/signup'>
+        <button className="btn btn-outline-info" style={{marginRight:"20px"}}>
+        <i className='fas fa-sign-out-alt'></i>&nbsp;Logout
+          </button>
+        </a>
 
       </header>
 

@@ -86,9 +86,16 @@ const BinPage = () => {
             🔍
           </button>
         </div>
+        <a href='/signup'>
+        <button className="btn btn-outline-info" style={{marginRight:"20px"}}>
+        <i className='fas fa-sign-out-alt'></i>&nbsp;Logout
+          </button>
+
+        </a>
       </header>
 
       <TabSection activeTab={activeTab} onTabChange={setActiveTab} />
+
 
       <div className="flex justify-between p-4 bg-white shadow-md rounded-lg mt-4">
         <button
