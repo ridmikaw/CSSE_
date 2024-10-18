@@ -57,40 +57,76 @@ export default function PaymentList() {
     <>
      <div className="payment-page flex flex-col min-h-screen bg-gray-50">
         {/* Header Section */}
-        <header className="fixed top-0 left-0 right-0 z-20 page-header flex justify-between items-center p-4 bg-white ">
-          <h2 className="text-xl font-bold">Payments</h2>
+        <header className="fixed  top-0 left-0 right-0 z-20 page-header flex justify-between items-center p-4 bg-white ">
+        <h2 className="text-xl font-bold">Payments</h2>
 
-          {/* Profile Icon and Dropdown */}
-          <div className="relative hidden md:block">
-            <button
-              className="profile-button text-2xl focus:outline-none"
-              onClick={toggleMenu}
+        {/* Profile Icon and Dropdown */}
+        <div className="relative  hidden md:block"> {/* Hide on small screens */}
+          <button
+            className="profile-button text-2xl focus:outline-none"
+            onClick={toggleMenu}
+          >
+            {/* Profile icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-8 w-8 text-gray-800"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
             >
-              {/* Profile icon */}
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A10.969 10.969 0 0112 15c2.576 0 4.927.896 6.879 2.404M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 2a10 10 0 110 20 10 10 0 010-20z" />
-              </svg>
-            </button>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5.121 17.804A10.969 10.969 0 0112 15c2.576 0 4.927.896 6.879 2.404M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 2a10 10 0 110 20 10 10 0 010-20z"
+              />
+            </svg>
+          </button>
 
-            {/* Dropdown Menu */}
-            {isMenuOpen && (
-              <div ref={dropdownRef} className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-30">
-                <ul className="py-2">
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Collections')}>Collection</li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Request')}>Request</li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Profile')}>Profile</li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Payments')}>Payments</li>
-                </ul>
-              </div>
-            )}
-          </div>
-        </header>
-
-        {/* Tab Section */}
-        <div className="fixed top-14 left-0 right-0 z-10">
-          <TabSection activeTab={activeTab} onTabChange={handleTabChange} />
+          {/* Dropdown Menu */}
+          {isMenuOpen && (
+  <div ref={dropdownRef} className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-30">
+    <ul className="py-2">
+      <Link to="/collection">
+        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Collections')}>
+          Collection
+        </li>
+      </Link>
+      <Link to="/request">
+        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Request')}>
+          Request
+        </li>
+      </Link>
+      <Link to="/profile">
+        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Profile')}>
+          Profile
+        </li>
+      </Link>
+      <Link to="/payments">
+        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Payments')}>
+          Payments
+        </li>
+      </Link>
+      <Link to="/dashboard">
+        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Dashboard')}>
+          Dashboard
+        </li>
+      </Link>
+    </ul>
+  </div>
+)}
         </div>
+      </header>
+
+      {/* Tab Section */}
+      <div className="fixed top-14 left-0 right-0 z-10">
+        <TabSection activeTab={activeTab} onTabChange={handleTabChange} />
+      </div>
 
         {/* Spacer for header and tab section */}
         <div className="pt-20"></div>
