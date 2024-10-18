@@ -83,13 +83,14 @@ export default function GarbageCollection() {
   };
 
   return (
-    <div className="payment-page flex flex-col min-h-screen bg-gray-50 p-4">
+    <>
+    <div className="payment-page flex flex-col min-h-screen p-8 bg-gray-50 ">
        {/* Header Section */}
-       <header className="fixed top-0 left-0 right-0 z-20 page-header flex justify-between items-center p-4 bg-white ">
-        <h2 className="text-xl font-bold">Payments</h2>
+       <header className="fixed  top-0 left-0 right-0 z-20 page-header flex justify-between items-center p-4 bg-white ">
+        <h2 className="text-xl font-bold">Garbage Collect</h2>
 
         {/* Profile Icon and Dropdown */}
-        <div className="relative hidden md:block"> {/* Hide on small screens */}
+        <div className="relative  hidden md:block"> {/* Hide on small screens */}
           <button
             className="profile-button text-2xl focus:outline-none"
             onClick={toggleMenu}
@@ -157,7 +158,7 @@ export default function GarbageCollection() {
       </div>
 
       {/* Spacer for header and tab section */}
-      <div className="pt-28"></div>
+      <div className="pt-14"></div>
 
       {/* Sort and Request Buttons */}
       <div className="flex justify-between items-center mb-4">
@@ -192,10 +193,13 @@ export default function GarbageCollection() {
             </div>
           </div>
         ))}
-         <div className="md:hidden block">
-        <TabBar />
+         
+        
+     
       </div>
-      </div>
+      
     </div>
+    <TabBar />
+    </>
   );
 }

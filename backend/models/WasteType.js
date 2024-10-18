@@ -7,6 +7,10 @@ const WasteTypeSchema = new mongoose.Schema({
   rate: { type: Number, required: true },
   description: { type: String, required: true },
   refundableType: { type: Boolean, default: false },
+  maxWeight: {
+    type: String,
+    required: true
+},
   basedOnWeight: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
 });

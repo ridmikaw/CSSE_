@@ -130,22 +130,22 @@ export const GetBinByUserId = async (req, res) => {
 };
 
 // Get all bins
-export const getAllBins = async (req, res) => {
-  try {
-    const bins = await Bin.find(); // Retrieve all bins from the database
+// export const getAllBins = async (req, res) => {
+//   try {
+//     const bins = await Bin.find(); // Retrieve all bins from the database
 
-    if (!bins.length) {
-      return res.status(404).json({ message: 'No bins found' });
-    }
+//     if (!bins.length) {
+//       return res.status(404).json({ message: 'No bins found' });
+//     }
 
-    await bin.deleteOne();
+//     await bin.deleteOne();
 
 
-    res.status(200).json({ message: 'Bin rejected and removed' });
-  } catch (err) {
-    res
-      .status(500)
-      .json({ message: 'Error rejecting bin', error: err.message });
-  }
-};
+//     res.status(200).json({ message: 'Bin rejected and removed' });
+//   } catch (err) {
+//     res
+//       .status(500)
+//       .json({ message: 'Error rejecting bin', error: err.message });
+//   }
+// };
 
