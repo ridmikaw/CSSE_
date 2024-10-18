@@ -38,7 +38,7 @@ function App() {
           <Route path="/requests" element={<VerifyBinPage />} />
 
           <Route path="/addwaste" element={<AddWasteType />} />
-          <Route path="/wastetype" element={<WasteTypesTable />} />
+          
 
           <Route path="/payments" element={<PaymentList/>}/>
 
@@ -46,7 +46,8 @@ function App() {
           <Route path="/wastecollection" element={<GarbageCollection/>}/>
           <Route path="/specialwastecollection" element={<SpeWasteCollection/>}/>
           <Route path="/dashboard" element={<Dashboard />}>
-            <Route path="wastetype" element={<ManageWasteType />} />
+            <Route path="wastetypeman" element={<ManageWasteType />} />
+            <Route path="wastetype" element={<WasteTypesTable />} />
             <Route path="managerefund" element={<ManageRefund />} />
             <Route path="addwaste" element={<AddWasteType />} />
             <Route path="refund" element={<RefundPage/>}/>

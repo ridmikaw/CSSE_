@@ -19,6 +19,11 @@ const refundSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  status: {
+    type: String,
+    enum: ['Pending', 'Accepted', 'Rejected'],
+    default: 'Pending',
+  },
 });
 
 const Refund = mongoose.model('Refund', refundSchema);

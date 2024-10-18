@@ -118,12 +118,12 @@ const SpeWasteCollection = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-8">Waste Bin Collection Request</h1>
+      <h1 className="text-3xl font-bold text-center mb-8">Waste Collection Request</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Map section */}
         <div className="lg:h-[500px] h-[300px] flex flex-col justify-start">
-          <h2 className="text-lg font-semibold mb-4">Pin Bin Location</h2>
+          <h2 className="text-lg font-semibold mt-9 mb-4">Pin Bin Location</h2>
           <MapComponent setSelectedLocation={setSelectedLocation} selectedLocation={selectedLocation} />
         </div>
 
