@@ -151,17 +151,17 @@ export default function GarbageCollection() {
       </div>
 
       {/* Payments List Section */}
-      <div className="space-y-4">
+      <div className="space-y-4 m-10">
         {wasteRequests.map((waste, index) => (
           <div
             key={index}
-            className="flex justify-between items-center p-4 bg-white shadow-md rounded-lg"
+            className="flex justify-between items-center p-8 bg-white shadow-md rounded-lg"
           >
             <div className="flex flex-col">
-            <span className={`${getStatusColor(waste.status)} font-bold text-xl`}>
+            <span className={`${getStatusColor(waste.status)} font-semibold text-xl`}>
                 {waste?.status}
               </span>
-              <span className="text-xl font-semibold">{waste.notes}</span>
+              <span className="text-xl mt-2 font-bold">{waste.notes}</span>
             </div>
             <div className="text-right text-sm text-gray-500">
               
