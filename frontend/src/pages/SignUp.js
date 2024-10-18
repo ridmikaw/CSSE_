@@ -33,52 +33,67 @@ const SignUp = () => {
   };
   
   return (
-    <div className="signup-container max-w-md mx-auto my-8 p-6 border border-gray-300 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-semibold mb-4 text-center">Sign Up</h2>
-      {error && (
-        <p className="error-message text-red-500 text-center">{error}</p>
-      )}
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          className="mb-3 p-2 border border-gray-300 rounded w-full"
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="mb-3 p-2 border border-gray-300 rounded w-full"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="mb-4 p-2 border border-gray-300 rounded w-full"
-        />
-        <button
-          type="submit"
-          className={`w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition-all duration-300 ${
-            loading ? 'opacity-50 cursor-not-allowed' : ''
-          }`}
-          disabled={loading}
-        >
-          {loading ? 'Signing Up...' : 'Sign Up'}
-        </button>
-      </form>
-      <p className="mt-4 text-center">
-        Already have an account?{' '}
-        <a href="/signin" className="text-blue-500">
-          Sign In
-        </a>
-      </p>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="signup-container flex bg-white p-8 border border-gray-300 rounded-lg shadow-lg max-w-4xl h-auto"> {/* Adjust height here */}
+        {/* Form on the left - 50% width */}
+        <div className="w-1/2 pr-8 flex flex-col justify-center"> {/* Flex container for vertical alignment */}
+          <h2 className="text-2xl font-semibold mb-4 text-center">Sign Up</h2>
+          {error && (
+            <p className="error-message text-red-500 text-center">{error}</p>
+          )}
+
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="mb-3 p-2 border border-gray-300 rounded w-full"
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="mb-3 p-2 border border-gray-300 rounded w-full"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="mb-4 p-2 border border-gray-300 rounded w-full"
+            />
+            <button
+              type="submit"
+              className={`w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition-all duration-300 ${
+                loading ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+              disabled={loading}
+            >
+              {loading ? 'Signing Up...' : 'Sign Up'}
+            </button>
+          </form>
+          <p className="mt-4 text-center">
+            Already have an account?{' '}
+            <a href="/signin" className="text-blue-500">
+              Sign In
+            </a>
+          </p>
+        </div>
+
+        {/* Image on the right - 50% width */}
+        <div className="w-1/2 flex justify-center items-center">
+          <img 
+            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp" 
+            alt="signup form" 
+            className="w h-auto" // Set width to 50% and maintain aspect ratio
+          />
+        </div>
+      </div>
     </div>
   );
 };
