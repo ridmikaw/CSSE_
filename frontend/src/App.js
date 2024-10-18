@@ -18,7 +18,7 @@ import WasteCollection from './pages/WasteCollection';
 import SpeWasteCollection from './pages/WasteCollection';
 
 import SubmitReview from './pages/SubmitReview';
-
+import VerifyBinPage from './pages/VerifyBin';
 
 function App() {
   return (
@@ -31,9 +31,11 @@ function App() {
           <Route path="/add-bin" element={<AddBin />} />
           <Route path="/collections" element={<BinCollection />} />
           <Route path="/bin" element={<BinPage />} />
+          <Route path="/requests" element={<VerifyBinPage />} />
 
           <Route path="/addwaste" element={<AddWasteType />} />
           <Route path="/wastetype" element={<WasteTypesTable />} />
+
           <Route path="/payments" element={<PaymentList/>}/>
 
           <Route path="/refund" element={<RefundPage/>}/>
@@ -42,8 +44,10 @@ function App() {
 
           
 
-          <Route path="/submit-review" element={<SubmitReview />} />
+          <Route path="/payments" element={<PaymentList />} />
 
+
+          <Route path="/submit-review" element={<SubmitReview />} />
         </Routes>
       </Router>
     </AuthProvider>

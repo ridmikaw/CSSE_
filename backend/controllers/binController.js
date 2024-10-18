@@ -27,7 +27,39 @@ export const addBin = async (req, res) => {
   }
 };
 
-// Verify bin and generate QR code
+// Get bins for a specific user
+export const getUserBins = async (req, res) => {
+  try {
+    const userId = req.user._id; // Get userId from the authenticated user
+    const bins = await Bin.find({ ownerId: userId });
+
+    if (!bins.length) {
+      return res.status(404).json({ message: 'No bins found for this user' });
+    }
+
+    res.status(200).json(bins);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: 'Error fetching user bins', error: err.message });
+  }
+};
+// Get all bins
+export const getAllBins = async (req, res) => {
+  try {
+    const bins = await Bin.find(); // Retrieve all bins from the database
+
+    if (!bins.length) {
+      return res.status(404).json({ message: 'No bins found' });
+    }
+
+    res.status(200).json(bins); // Return the bins
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: 'Error fetching bins', error: err.message });
+  }
+};
 export const verifyBin = async (req, res) => {
   try {
     const { binId } = req.params;
@@ -41,7 +73,8 @@ export const verifyBin = async (req, res) => {
       return res.status(400).json({ message: 'Bin is already verified' });
     }
 
-    const qrData = `${process.env.BASE_URL}/bins/${bin._id}`;
+    // Generate QR code with bin coordinates and waste type
+    const qrData = `Type: ${bin.binType}, Location: (${bin.location.lat}, ${bin.location.lng})`;
     const qrCode = await generateQRCode(qrData);
 
     bin.isVerified = true;
@@ -58,15 +91,16 @@ export const verifyBin = async (req, res) => {
   }
 };
 
-// Get bins for a specific user
-export const getUserBins = async (req, res) => {
+// Reject bin
+export const rejectBin = async (req, res) => {
   try {
-    const userId = req.user._id; // Get userId from the authenticated user
-    const bins = await Bin.find({ ownerId: userId });
+    const { binId } = req.params;
+    const bin = await Bin.findById(binId);
 
-    if (!bins.length) {
-      return res.status(404).json({ message: 'No bins found for this user' });
+    if (!bin) {
+      return res.status(404).json({ message: 'Bin not found' });
     }
+
 
     res.status(200).json(bins);
   } catch (err) {
@@ -104,11 +138,14 @@ export const getAllBins = async (req, res) => {
       return res.status(404).json({ message: 'No bins found' });
     }
 
-    res.status(200).json(bins); // Return the bins
+    await bin.deleteOne();
+
+
+    res.status(200).json({ message: 'Bin rejected and removed' });
   } catch (err) {
     res
       .status(500)
-      .json({ message: 'Error fetching bins', error: err.message });
+      .json({ message: 'Error rejecting bin', error: err.message });
   }
 };
 
