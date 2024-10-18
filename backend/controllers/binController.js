@@ -101,7 +101,45 @@ export const rejectBin = async (req, res) => {
       return res.status(404).json({ message: 'Bin not found' });
     }
 
+
+    res.status(200).json(bins);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: 'Error fetching user bins', error: err.message });
+  }
+};
+
+
+//binMAPuseriD
+export const GetBinByUserId = async (req, res) => {
+  try {
+    const userId = req.params.userId; // Read userId from the URL path
+    const bins = await Bin.find({ ownerId: userId });
+    console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDD",bins);
+    
+
+    if (!bins.length) {
+      return res.status(404).json({ message: 'No bins found for this user' });
+    }
+
+    res.status(200).json(bins);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching user bins', error: err.message });
+  }
+};
+
+// Get all bins
+export const getAllBins = async (req, res) => {
+  try {
+    const bins = await Bin.find(); // Retrieve all bins from the database
+
+    if (!bins.length) {
+      return res.status(404).json({ message: 'No bins found' });
+    }
+
     await bin.deleteOne();
+
 
     res.status(200).json({ message: 'Bin rejected and removed' });
   } catch (err) {
@@ -110,21 +148,4 @@ export const rejectBin = async (req, res) => {
       .json({ message: 'Error rejecting bin', error: err.message });
   }
 };
-// Get bin details by ID
-export const getBinById = async (req, res) => {
-  try {
-    const { binId } = req.params; // Get the bin ID from the request parameters
-    const bin = await Bin.findById(binId); // Fetch the bin details using its ID
 
-    if (!bin) {
-      return res.status(404).json({ message: 'Bin not found' }); // Return error if bin not found
-    }
-
-    res.status(200).json(bin); // Return the bin details
-  } catch (err) {
-    console.error(err); // Log the error for debugging
-    res
-      .status(500)
-      .json({ message: 'Error fetching bin details', error: err.message }); // Return server error message
-  }
-};
