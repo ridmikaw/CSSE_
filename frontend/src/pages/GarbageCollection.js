@@ -3,12 +3,35 @@ import TabSection from '../components/TabSection';
 import Modal from '../components/PaymentDialog'; // Import the Modal component
 import TabBar from '../components/TabBar';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useAuth } from '../middleware/AuthContext';
 
 export default function GarbageCollection() {
   const [activeTab, setActiveTab] = useState('WasteCollection');
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(null); // State to hold selected payment details
   const [isMenuOpen, setMenuOpen] = useState(false); //nav
+
+  const [wasteRequests, setWasteRequests] = useState([]);
+  const { user, loading } = useAuth();
+  const userId = user?._id
+
+  useEffect(() => {
+    
+    const fetchRequests = async () => {
+      try {
+        
+        const response = await axios.get(`http://localhost:4000/api//waste-requests/user/${userId}`);
+        setWasteRequests(response.data.wasteRequests);
+      } catch (error) {
+        console.error('Error fetching waste requests:', error);
+      }
+    };
+
+    fetchRequests();
+  }, [userId]);
+
+
   const dropdownRef = useRef(null);
    // Toggle the profile dropdown menu
    const toggleMenu = () => {
@@ -30,7 +53,18 @@ export default function GarbageCollection() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'Completed':
+        return 'text-green-500';
+      case 'Cancelled':
+        return 'text-red-500';
+      case 'Pending':
+        return 'text-gray-400'; // Ash color for pending status
+      default:
+        return 'text-gray-500'; // Default color if status is unknown
+    }
+  };
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -42,6 +76,11 @@ export default function GarbageCollection() {
     { status: 'Cancelled', id: 'J9EF-345', date: '12th July 2024', statusColor: 'text-red-500' },
     { status: 'Completed', id: 'RE1H-876', date: '31st June 2024', statusColor: 'text-green-500' },
   ];
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' }; // e.g., "October 22, 2024"
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
 
   return (
     <div className="payment-page flex flex-col min-h-screen bg-gray-50 p-4">
@@ -113,19 +152,22 @@ export default function GarbageCollection() {
 
       {/* Payments List Section */}
       <div className="space-y-4">
-        {payments.map((payment, index) => (
+        {wasteRequests.map((waste, index) => (
           <div
             key={index}
             className="flex justify-between items-center p-4 bg-white shadow-md rounded-lg"
           >
             <div className="flex flex-col">
-              <span className={`${payment.statusColor} font-bold`}>{payment.status}</span>
-              <span className="text-xl font-semibold">{payment.id}</span>
+            <span className={`${getStatusColor(waste.status)} font-bold text-xl`}>
+                {waste?.status}
+              </span>
+              <span className="text-xl font-semibold">{waste.notes}</span>
             </div>
             <div className="text-right text-sm text-gray-500">
+              
               <span>Requested Date</span>
               <br />
-              <span>{payment.date}</span>
+              <span>{formatDate(waste.date)}</span>
             </div>
           </div>
         ))}
