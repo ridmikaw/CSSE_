@@ -17,6 +17,7 @@ const binSchema = new mongoose.Schema(
     },
     qrCode: { type: String }, // QR code generated after verification
     isVerified: { type: Boolean, default: false },
+    wasteKilos: { type: Number },
   },
   { timestamps: true }
 );

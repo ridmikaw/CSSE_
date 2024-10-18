@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook for navigation
 import TabBar from '../components/TabBar';
 import QRLinkCard from '../components/QRLinkCard';
 import TabSection from '../components/TabSection';
-import QRScanner from '../components/QRScanner'; // Import the QRScanner component
+import QRScanner from '../components/QRScanner';
 
 const BinCollection = () => {
   const [activeTab, setActiveTab] = useState('Collect');
   const [isScanning, setIsScanning] = useState(false); // State to manage scanning mode
   const [binData, setBinData] = useState(null); // State to store scanned bin data
+  const navigate = useNavigate(); // Hook to handle navigation
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -15,6 +17,12 @@ const BinCollection = () => {
 
   const handleContinue = () => {
     setIsScanning(true); // Activate scanning mode on continue button click
+  };
+
+  const handleScanComplete = (data) => {
+    setBinData(data);
+    setIsScanning(false); // Exit scanning mode after scanning
+    navigate(`/bin-details/${data}`); // Navigate to the page with bin details based on scanned data
   };
 
   return (
@@ -41,10 +49,7 @@ const BinCollection = () => {
 
       {isScanning ? (
         <QRScanner
-          onScanComplete={(data) => {
-            setBinData(data);
-            setIsScanning(false); // Exit scanning mode after scanning
-          }}
+          onScanComplete={handleScanComplete} // Handle the scan complete event
           onClose={() => setIsScanning(false)}
         />
       ) : (

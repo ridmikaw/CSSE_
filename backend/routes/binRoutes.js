@@ -4,6 +4,7 @@ import {
   verifyBin,
   getUserBins,
   getAllBins,
+  getBinById,
 } from '../controllers/binController.js';
 
 const router = express.Router();
@@ -13,5 +14,6 @@ router.post('/bins', addBin);
 router.get('/bins/:userId', getUserBins);
 router.get('/bins', getAllBins);
 router.put('/bins/:binId', verifyBin);
+router.get('/bins/:binId', getBinById);
 
 export default router;

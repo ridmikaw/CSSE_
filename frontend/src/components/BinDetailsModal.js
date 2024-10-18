@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 
 const BinDetailsModal = ({ bin, onClose }) => {
+  const qrCodeRef = useRef();
+
+  const handleDownloadQRCode = () => {
+    const canvas = qrCodeRef.current.querySelector('canvas');
+    const imageUrl = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = imageUrl;
+    link.download = `QRCode_${bin._id}.png`;
+    link.click();
+  };
+
   return (
     <div className="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
       <div className="modal-content bg-white rounded-lg p-6 max-w-md w-full mx-auto">
@@ -15,19 +26,27 @@ const BinDetailsModal = ({ bin, onClose }) => {
         {bin.isVerified && (
           <div className="mt-4">
             <strong>QR Code:</strong>
-            <div className="flex justify-center mt-2">
+            <div ref={qrCodeRef} className="flex justify-center mt-2">
               <QRCodeCanvas value={`https://example.com/bins/${bin._id}`} />
             </div>
-            <button
-              className="share-button bg-blue-500 text-white px-3 py-2 rounded mt-2 w-full"
-              onClick={() =>
-                navigator.clipboard.writeText(
-                  `https://example.com/bins/${bin._id}`
-                )
-              }
-            >
-              Share QR Code
-            </button>
+            <div className="flex gap-2 mt-2">
+              <button
+                className="share-button bg-blue-500 text-white px-3 py-2 rounded w-full"
+                onClick={() =>
+                  navigator.clipboard.writeText(
+                    `https://example.com/bins/${bin._id}`
+                  )
+                }
+              >
+                Share QR Code
+              </button>
+              <button
+                className="download-button bg-green-500 text-white px-3 py-2 rounded w-full"
+                onClick={handleDownloadQRCode}
+              >
+                Download QR Code
+              </button>
+            </div>
           </div>
         )}
         <button
