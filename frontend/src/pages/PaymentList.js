@@ -2,6 +2,9 @@ import React, {useEffect, useRef, useState } from 'react';
 import TabSection from '../components/TabSection';
 import TabBar from '../components/TabBar';
 import Modal from '../components/PaymentDialog'; // Import the Modal component
+import { Link } from 'react-router-dom';
+import RefundDialog from '../components/RefundDialog';
+import { useAuth } from '../middleware/AuthContext';
 
 export default function PaymentList() {
   const [activeTab, setActiveTab] = useState('Payments');
@@ -9,35 +12,42 @@ export default function PaymentList() {
   const [selectedPayment, setSelectedPayment] = useState(null); // State to hold selected payment details
   const [isMenuOpen, setMenuOpen] = useState(false); //nav
   const dropdownRef = useRef(null);
+  const [isRefundDialogOpen, setRefundDialogOpen] = useState(false);
+  const { user, loading } = useAuth();
+  const userId = user?._id
    // Toggle the profile dropdown menu
-   const toggleMenu = () => {
-    setMenuOpen(!isMenuOpen);
-  };
-   // Close the dropdown menu when clicking outside of it
+   // Toggle profile dropdown
+   const toggleMenu = () => setMenuOpen(!isMenuOpen);
+
+   // Handle click outside dropdown
    useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setMenuOpen(false); // Close the menu if clicking outside
-      }
-    };
-
-    // Attach the event listener
-    document.addEventListener('mousedown', handleClickOutside);
-
-    // Cleanup the event listener on unmount
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
-
-  // Function to handle Pay Now button click
+     const handleClickOutside = (event) => {
+       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+         setMenuOpen(false);
+       }
+     };
+     document.addEventListener('mousedown', handleClickOutside);
+     return () => document.removeEventListener('mousedown', handleClickOutside);
+   }, []);
+ 
+   // Open refund dialog
+   const handleRefundClick = () => {
+     setRefundDialogOpen(true);
+   };
+ 
+   // Handle refund form submission
+   const handleRefundSubmit = (refundData) => {
+     console.log('Refund submitted:', refundData);
+     setRefundDialogOpen(false); // Close the dialog after submitting
+   };
+    // Function to handle Pay Now button click
   const handlePayNowClick = (payment) => {
     setSelectedPayment(payment);
     setModalOpen(true); // Open the modal
   };
+ 
+   // Handle tab change
+   const handleTabChange = (tab) => setActiveTab(tab);
 
   return (
     <div className="payment-page flex flex-col min-h-screen bg-gray-50">
@@ -93,8 +103,19 @@ export default function PaymentList() {
       </div>
 
       {/* Spacer for header and tab section */}
-      <div className="pt-28"></div>
+      <div className="pt-32"></div>
 
+      <div className="flex justify-between items-center m-2 mb-4">
+        <div className="flex space-x-2 items-center">
+          <button className="bg-white text-white px-3 py-1 rounded-lg flex items-center">
+            <span className="mr-2"></span> 
+          </button>
+        </div>
+        <button  onClick={handleRefundClick}   className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center">
+          Request Refund
+        </button>
+      </div>
+      <div className="pt-18"></div>
       {/* Main Content */}
       <div className="flex-1 w-full max-w-lg mx-auto m-5 mt-6">
         {/* Pending Payment Card */}
@@ -110,7 +131,12 @@ export default function PaymentList() {
             Pay Now
           </button>
         </div>
-
+        <RefundDialog
+        isOpen={isRefundDialogOpen}
+        onClose={() => setRefundDialogOpen(false)}
+        onSubmit={handleRefundSubmit}
+        userId={userId}
+      />
         {/* Completed Payment Card 1 */}
         <div className="bg-white p-6 rounded-lg shadow-md mb-4 mx-4 sm:mx-0">
           <div className="flex justify-between items-center">

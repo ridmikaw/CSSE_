@@ -21,7 +21,7 @@ export default function GarbageCollection() {
     const fetchRequests = async () => {
       try {
         
-        const response = await axios.get(`http://localhost:4000/api//waste-requests/user/${userId}`);
+        const response = await axios.get(`http://localhost:4000/api/waste-requests/user/${userId}`);
         setWasteRequests(response.data.wasteRequests);
       } catch (error) {
         console.error('Error fetching waste requests:', error);
@@ -118,15 +118,36 @@ export default function GarbageCollection() {
 
           {/* Dropdown Menu */}
           {isMenuOpen && (
-            <div ref={dropdownRef} className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-30">
-              <ul className="py-2">
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Collections')}>Collection</li>
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Request')}>Request</li>
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Profile')}>Profile</li>
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Payments')}>Payments</li>
-              </ul>
-            </div>
-          )}
+  <div ref={dropdownRef} className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-30">
+    <ul className="py-2">
+      <Link to="/collection">
+        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Collections')}>
+          Collection
+        </li>
+      </Link>
+      <Link to="/request">
+        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Request')}>
+          Request
+        </li>
+      </Link>
+      <Link to="/profile">
+        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Profile')}>
+          Profile
+        </li>
+      </Link>
+      <Link to="/payments">
+        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Payments')}>
+          Payments
+        </li>
+      </Link>
+      <Link to="/dashboard">
+        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setActiveTab('Dashboard')}>
+          Dashboard
+        </li>
+      </Link>
+    </ul>
+  </div>
+)}
         </div>
       </header>
 

@@ -18,6 +18,9 @@ import WasteCollection from './pages/WasteCollection';
 import SpeWasteCollection from './pages/WasteCollection';
 
 import SubmitReview from './pages/SubmitReview';
+import ManageWasteType from './dashboard/ManageWasteType';
+import ManageRefund from './dashboard/ManageRefund';
+import Dashboard from './dashboard/Dashboard';
 
 
 function App() {
@@ -36,9 +39,15 @@ function App() {
           <Route path="/wastetype" element={<WasteTypesTable />} />
           <Route path="/payments" element={<PaymentList/>}/>
 
-          <Route path="/refund" element={<RefundPage/>}/>
+          
           <Route path="/wastecollection" element={<GarbageCollection/>}/>
           <Route path="/specialwastecollection" element={<SpeWasteCollection/>}/>
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route path="wastetype" element={<ManageWasteType />} />
+            <Route path="managerefund" element={<ManageRefund />} />
+            <Route path="addwaste" element={<AddWasteType />} />
+            <Route path="refund" element={<RefundPage/>}/>
+          </Route>
 
           
 
