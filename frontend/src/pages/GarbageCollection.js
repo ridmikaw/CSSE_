@@ -47,7 +47,7 @@ export default function GarbageCollection() {
     <div className="payment-page flex flex-col min-h-screen bg-gray-50 p-4">
        {/* Header Section */}
        <header className="fixed top-0 left-0 right-0 z-20 page-header flex justify-between items-center p-4 bg-white ">
-        <h2 className="text-xl font-bold">Payments</h2>
+        <h2 className="text-xl font-bold">Waste Collection</h2>
 
         {/* Profile Icon and Dropdown */}
         <div className="relative hidden md:block"> {/* Hide on small screens */}
