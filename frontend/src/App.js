@@ -12,6 +12,10 @@ import { AuthProvider } from './middleware/AuthContext';
 import AddWasteType from './pages/AddWasteType';
 import PaymentList from './pages/PaymentList';
 import WasteTypesTable from './pages/WasteTypeTable';
+import RefundPage from './pages/RefundPage';
+import GarbageCollection from './pages/GarbageCollection';
+import WasteCollection from './pages/WasteCollection';
+import SpeWasteCollection from './pages/WasteCollection';
 
 import SubmitReview from './pages/SubmitReview';
 import VerifyBinPage from './pages/VerifyBin';
@@ -31,7 +35,17 @@ function App() {
 
           <Route path="/addwaste" element={<AddWasteType />} />
           <Route path="/wastetype" element={<WasteTypesTable />} />
+
+          <Route path="/payments" element={<PaymentList/>}/>
+
+          <Route path="/refund" element={<RefundPage/>}/>
+          <Route path="/wastecollection" element={<GarbageCollection/>}/>
+          <Route path="/specialwastecollection" element={<SpeWasteCollection/>}/>
+
+          
+
           <Route path="/payments" element={<PaymentList />} />
+
 
           <Route path="/submit-review" element={<SubmitReview />} />
         </Routes>
