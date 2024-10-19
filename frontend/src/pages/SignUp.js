@@ -15,14 +15,18 @@ const SignUp = () => {
     e.preventDefault();
     setError('');
     setLoading(true); // Set loading state to true
-  
+
     try {
       // Use the sign-up endpoint from the config
-      const response = await axios.post(API_ENDPOINTS.SIGN_UP, { name, email, password });
-      
+      const response = await axios.post(API_ENDPOINTS.SIGN_UP, {
+        name,
+        email,
+        password,
+      });
+
       // Log user details in the browser console
       console.log('User signed up:', response.data); // Log the response data
-  
+
       navigate('/signin'); // Redirect to sign-in page after successful registration
     } catch (err) {
       setError('Error signing up, please try again'); // Display error message
@@ -31,7 +35,7 @@ const SignUp = () => {
       setLoading(false); // Reset loading state
     }
   };
-  
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="signup-container flex bg-white p-8 border border-gray-300 rounded-lg shadow-lg max-w-4xl h-auto"> {/* Adjust height here */}
