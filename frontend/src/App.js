@@ -22,6 +22,8 @@ import ManageWasteType from './dashboard/ManageWasteType';
 import ManageRefund from './dashboard/ManageRefund';
 import Dashboard from './dashboard/Dashboard';
 import VerifyBinPage from './pages/VerifyBin';
+import TabSection from './components/TabSection';
+import BinDetails from './pages/Bindetails';
 
 
 function App() {
@@ -59,6 +61,7 @@ function App() {
 
 
           <Route path="/submit-review" element={<SubmitReview />} />
+          <Route path="/waste-add/:binId" element={<BinDetails />} />
         </Routes>
       </Router>
     </AuthProvider>
